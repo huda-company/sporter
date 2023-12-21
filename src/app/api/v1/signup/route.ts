@@ -25,6 +25,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ data: newUser }, { status: 200 });
     }
   } catch (error) {
-    return Response.json({ data: null }, { status: 500 });
+    return NextResponse.json({ data: null }, { status: 500 });
   }
 }

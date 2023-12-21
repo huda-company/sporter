@@ -1,4 +1,4 @@
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 import { MONGODB } from "@/config/mongodb";
 
@@ -28,7 +28,7 @@ export async function GET(req: NextRequest) {
     sort: sortOptions,
   });
 
-  return Response.json({ data: wishlists }, { status: 200 });
+  return NextResponse.json({ data: wishlists }, { status: 200 });
 }
 
 export async function POST(req: NextRequest) {
@@ -45,8 +45,8 @@ export async function POST(req: NextRequest) {
 
     const store = await Role.create(dataToInsert);
 
-    return Response.json({ data: store }, { status: 200 });
+    return NextResponse.json({ data: store }, { status: 200 });
   } catch (error) {
-    return Response.json({ data: null }, { status: 500 });
+    return NextResponse.json({ data: null }, { status: 500 });
   }
 }

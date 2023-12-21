@@ -64,6 +64,6 @@ export async function POST(req: NextRequest) {
         statCode[200]
       );
     }
-    return Response.json({ data: null }, statCode[500]);
+    return NextResponse.json({ data: null }, statCode[500]);
   }
 }
