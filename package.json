@@ -14,14 +14,32 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/cookie-parser": "^1.4.6",
+    "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.5",
+    "@types/mongoose": "^5.11.97",
     "antd": "^5.11.1",
+    "axios": "^1.6.2",
+    "bcrypt": "^5.1.1",
+    "clsx": "^2.0.0",
     "commitlint": "^18.4.3",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "eslint-plugin-unused-imports": "^3.0.0",
+    "express": "^4.18.2",
     "jest": "^29.7.0",
+    "jose": "^5.1.3",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.0.2",
+    "mongoose-paginate-v2": "^1.7.4",
     "next": "14.0.2",
+    "next-auth": "^4.24.5",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-icons": "^4.12.0",
+    "tailwind-merge": "^2.1.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^18.4.3",
