@@ -40,6 +40,9 @@ export const UserSchema = new Schema<IUserDocument>(
     phoneVerifAt: {
       type: Date,
     },
+    emailVerifCode: {
+      type: String,
+    },
     emailVerifAt: {
       type: Date,
     },
