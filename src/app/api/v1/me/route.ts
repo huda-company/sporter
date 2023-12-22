@@ -40,7 +40,7 @@ export async function GET(req: NextRequest) {
       );
     }
     return NextResponse.json(
-      respBody.ERROR.EXPIRED_INVALID_TOKEN,
+      { ...respBody.ERROR.UNEXPECTED_ERROR },
       statCode[401]
     );
   }

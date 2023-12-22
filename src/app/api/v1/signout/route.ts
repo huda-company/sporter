@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
+import { respBody } from "@/config/serverResponse";
+
 import connectToDatabase from "@/mongodb/connDb";
 import Session from "@/mongodb/schemas/session";
 
@@ -28,6 +30,9 @@ export async function GET(req: NextRequest) {
         { status: 401 }
       );
     }
-    return NextResponse.json({ data: null }, { status: 500 });
+    return NextResponse.json(
+      { ...respBody.ERROR.UNEXPECTED_ERROR },
+      { status: 500 }
+    );
   }
 }

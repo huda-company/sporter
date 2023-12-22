@@ -13,6 +13,7 @@ export interface IUserDocument extends Document {
   gender: Gender;
   phoneVerifAt: Date;
   emailVerifAt: Date;
+  emailVerifCode: string;
   roles: string[];
 }
 

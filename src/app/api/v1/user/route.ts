@@ -2,6 +2,8 @@
 /* eslint-disable no-console */
 import { NextRequest, NextResponse } from "next/server";
 
+import { respBody } from "@/config/serverResponse";
+
 import connectToDatabase from "@/mongodb/connDb";
 import Role from "@/mongodb/schemas/role";
 import User from "@/mongodb/schemas/user";
@@ -43,6 +45,9 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ data: doCreateBranch }, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ data: null }, { status: 500 });
+    return NextResponse.json(
+      { ...respBody.ERROR.UNEXPECTED_ERROR },
+      { status: 500 }
+    );
   }
 }

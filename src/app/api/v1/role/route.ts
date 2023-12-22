@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import { MONGODB } from "@/config/mongodb";
+import { respBody, statCode } from "@/config/serverResponse";
 
 import connectToDatabase from "@/mongodb/connDb";
 import Role from "@/mongodb/schemas/role";
@@ -43,10 +44,16 @@ export async function POST(req: NextRequest) {
       isActive: isActive,
     };
 
-    const store = await Role.create(dataToInsert);
+    const role = await Role.create(dataToInsert);
 
-    return NextResponse.json({ data: store }, { status: 200 });
+    return NextResponse.json(
+      { ...respBody.SUCCESS.RETRIEVED_DATA_SUCCESS, data: role },
+      statCode[200]
+    );
   } catch (error) {
-    return NextResponse.json({ data: null }, { status: 500 });
+    return NextResponse.json(
+      { ...respBody.ERROR.UNEXPECTED_ERROR },
+      { status: 500 }
+    );
   }
 }
