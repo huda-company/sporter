@@ -1,6 +1,7 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
+import { respBody, statCode } from "./config/serverResponse";
 import { apiMware } from "./middlewares/apiMiddleware";
 
 //this middleware is suggested by nextjs docs.
@@ -15,7 +16,10 @@ export async function middleware(request: NextRequest) {
       return NextResponse.next();
     else return apiMwareCheck;
   } else {
-    return NextResponse.json({ data: null }, { status: 401 });
+    return NextResponse.json(
+      { ...respBody.ERROR.UNEXPECTED_ERROR },
+      statCode[401]
+    );
   }
 }
 

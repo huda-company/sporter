@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { NextRequest } from "next/server";
 
 import { findOneAndUpdateOrCreate } from "./mongoQuery";
 
@@ -38,4 +39,9 @@ export const saveTokenSessionToDB = async (token: string) => {
 
     await findOneAndUpdateOrCreate("sessions", q, updatedData);
   }
+};
+
+export const getTokenFromRequest = async (req: NextRequest) => {
+  const header = await req.headers;
+  return header.get("Authorization")?.split(" ")[1] ?? "";
 };

@@ -7,6 +7,8 @@ import { verifyToken } from "@/utils/auth";
 import { API_VERSION, BASE_URL } from "@/config/env";
 import { MAX_AGE } from "@/config/jwt";
 
+import { signInAPI } from "@/app/services/auth";
+
 export const authOptions: NextAuthOptions = {
   debug: true,
   pages: {
@@ -31,10 +33,7 @@ export const authOptions: NextAuthOptions = {
       },
       authorize: async (credentials) => {
         try {
-          const response = await axios.post(
-            `${BASE_URL}/api/${API_VERSION}/signin`,
-            credentials
-          );
+          const response = await signInAPI(credentials);
 
           const data: { user: User; token: string } = await response.data;
 

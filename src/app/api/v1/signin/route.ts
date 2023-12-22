@@ -15,38 +15,54 @@ export async function POST(req: NextRequest) {
     await connectToDatabase();
 
     const userCheck = await User.findOne({ email: email });
-    if (userCheck) {
-      const isPasswordValid = await bcrypt.compare(
-        password,
-        userCheck.password
-      );
-      if (isPasswordValid) {
-        const checkUsrSession = await Session.findOne({ userId: userCheck.id });
-        if (checkUsrSession) {
-          // Verify the token
-          await verifyToken(String(checkUsrSession.token));
-          return NextResponse.json(
-            { data: userCheck, token: checkUsrSession.token },
-            statCode[200]
-          );
-        } else {
-          const jwtToken = await generateToken(userCheck?.id);
-          await saveTokenSessionToDB(jwtToken);
-
-          return NextResponse.json(
-            { data: userCheck, token: jwtToken },
-            statCode[200]
-          );
-        }
-      } else {
-        return NextResponse.json(
-          respBody.ERROR.INC_EMAIL_PASSWORD,
-          statCode[400]
-        );
-      }
-    } else {
+    if (!userCheck)
       return NextResponse.json(respBody.ERROR.UNKNOWN_EMAIL, statCode[400]);
+
+    //matching password
+    const isPasswordValid = await bcrypt.compare(password, userCheck.password);
+    if (!isPasswordValid) {
+      return NextResponse.json(
+        respBody.ERROR.INC_EMAIL_PASSWORD,
+        statCode[400]
+      );
     }
+
+    //checking user session
+    const checkUsrSession = await Session.findOne({ userId: userCheck.id });
+
+    if (!checkUsrSession) {
+      const generatedtoken = await generateToken(userCheck?.id);
+      await saveTokenSessionToDB(generatedtoken);
+
+      return NextResponse.json(
+        {
+          ...respBody.SUCCESS.SIGN_IN_SUCCESS,
+          data: userCheck,
+          token: generatedtoken,
+        },
+        statCode[200]
+      );
+    }
+
+    // Verify the token
+    let userToken = checkUsrSession.token;
+    const verifToken = await verifyToken(String(checkUsrSession.token));
+
+    //perform regenerate JWT token
+    if (!verifToken) {
+      const jwtToken = await generateToken(userCheck?.id);
+      await saveTokenSessionToDB(jwtToken);
+      userToken = jwtToken;
+    }
+
+    return NextResponse.json(
+      {
+        ...respBody.SUCCESS.SIGN_IN_SUCCESS,
+        data: userCheck,
+        token: userToken,
+      },
+      statCode[200]
+    );
   } catch (error: any) {
     if (error.code == "ERR_JWT_EXPIRED") {
       await connectToDatabase();
@@ -64,6 +80,9 @@ export async function POST(req: NextRequest) {
         statCode[200]
       );
     }
-    return NextResponse.json({ data: null }, statCode[500]);
+    return NextResponse.json(
+      { ...respBody.ERROR.UNEXPECTED_ERROR },
+      statCode[500]
+    );
   }
 }
